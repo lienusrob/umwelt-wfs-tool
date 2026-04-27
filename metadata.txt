@@ -1,0 +1,28 @@
+[general]
+name=Umwelt WFS Tool
+qgisMinimumVersion=3.22
+qgisMaximumVersion=4.99
+description=Direktzugriff auf Umwelt-WFS-Dienste: BFN-Schutzgebiete und Länderdienste (Flurstücke/ALKIS, Biotope, Boden, Wasser)
+version=0.2.0
+author=Lienus Rob
+email=lienus.rob@hotmail.de
+about=Das Umwelt WFS Tool ermöglicht den direkten Zugriff auf über 80 öffentliche Umwelt-Geodienste in QGIS.
+
+  Funktionen:
+  - BFN-Schutzgebiete (Natura 2000 FFH/VSG, NSG, LSG, Nationalparke, Biosphärenreservate, Naturparke, Nationale Naturmonumente, AWZ)
+  - Länderdienste für alle 16 Bundesländer: Schutzgebiete, Biotope, Boden, Wasser, Flurstücke/ALKIS
+  - Automatisches Styling nach EBA/BfN-Kartierkonventionen
+  - Verschneidung mit eigenem Untersuchungsraum (Polygon + Puffer)
+  - UVP-Kategorien: Layer werden automatisch in Gruppen sortiert
+  - Unterstützt QGIS 3.22 bis 4.x
+
+tracker=https://github.com/lienusrob/umwelt-wfs-tool/issues
+repository=https://github.com/lienusrob/umwelt-wfs-tool
+hasProcessingProvider=no
+tags=bfn,bundesamt für naturschutz,naturschutz,schutzgebiete,artenkataster,natura2000,ffh,vsg,nsg,lsg,wfs,umwelt,uvp,alkis,flurstücke,deutschland,geodaten,biotope,wasser,boden
+homepage=https://github.com/lienusrob/umwelt-wfs-tool
+category=Web
+icon=icon.svg
+experimental=False
+deprecated=False
+server=False
