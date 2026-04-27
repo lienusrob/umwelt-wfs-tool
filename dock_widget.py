@@ -870,7 +870,6 @@ class UmweltDockWidget(QDockWidget):
         layout.addLayout(sel_row)
 
         # ── Suche ────────────────────────────────────────────────────
-        from qgis.PyQt.QtWidgets import QLineEdit
         self._ext_search = QLineEdit()
         self._ext_search.setPlaceholderText("Layer suchen …")
         self._ext_search.setClearButtonEnabled(True)
