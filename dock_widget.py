@@ -715,7 +715,13 @@ class UmweltDockWidget(QDockWidget):
             ("Flurstücke (ALKIS INSPIRE)",  "https://www.geodaten-mv.de/dienste/inspire_cp_alkis_download",              "Mecklenburg-Vorpommern"),
             # ── Niedersachsen ─────────────────────────────────────────
             ("── Niedersachsen ──", None, None),
-            ("Flurstücke (ALKIS INSPIRE)", "https://www.inspire.niedersachsen.de/doorman/noauth/alkis-dls-cp", "Niedersachsen"),
+            ("Schutzgebiete NI (Umweltkarten)",    "https://www.umweltkarten-niedersachsen.de/inspire/rest/services/SchutzgebieteNI/MapServer/exts/InspireFeatureDownload/service", "Niedersachsen"),
+            ("Biosphäre Wattenmeer – Zonierung",   "https://mdi.niedersachsen.de/geoserver/Biosphaere/wfs",                                                                          "Niedersachsen"),
+            ("Verwaltungsgrenzen (LGLN)",          "https://opendata.lgln.niedersachsen.de/doorman/noauth/verwaltungsgrenzen_wfs",                                                   "Niedersachsen"),
+            ("Gebäude INSPIRE (LGLN)",             "https://www.inspire.niedersachsen.de/doorman/noauth/alkis-dls-bu-core2d",                                                        "Niedersachsen"),
+            ("Adressen INSPIRE (LGLN)",            "https://www.inspire.niedersachsen.de/doorman/noauth/alkis-dls-ad",                                                               "Niedersachsen"),
+            ("Flurstücke ALKIS vereinf. (LGLN)",   "https://opendata.lgln.niedersachsen.de/doorman/noauth/alkis_wfs_einfach",                                                        "Niedersachsen"),
+            ("Flurstücke ALKIS INSPIRE ⚠ fehleranf.", "https://www.inspire.niedersachsen.de/doorman/noauth/alkis-dls-cp",                                                           "Niedersachsen"),
             # ── Nordrhein-Westfalen ───────────────────────────────────
             ("── Nordrhein-Westfalen ──", None, None),
             ("Umweltdaten (WSG / Natura 2000)", "https://www.wfs.nrw.de/umwelt/linfos",                        "Nordrhein-Westfalen"),
@@ -1096,8 +1102,9 @@ class UmweltDockWidget(QDockWidget):
         if any(kw in titles for kw in _HEAVY):
             self._ext_status.setText(
                 "⚠ Datenintensive Layer (Flurstücke, Boden, ALKIS …) bitte einzeln laden. "
-                "Vor dem Laden in den gewünschten Bereich zoomen – "
-                "es werden nur die Features im aktuellen Kartenausschnitt geladen."
+                "Zuerst weit in den gewünschten Bereich reinzoomen und laden – "
+                "klappt das nicht, auf einen kleineren Maßstab wechseln und erneut versuchen. "
+                "Flurstück-Layer können je nach Dienst fehleranfällig sein."
             )
             self._ext_status.setStyleSheet(
                 "font-size:11px; color:#e65100; background:#fff3e0; "
