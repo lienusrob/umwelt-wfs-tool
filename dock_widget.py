@@ -1154,7 +1154,7 @@ class UmweltDockWidget(QDockWidget):
                     bl = ld.get("bundesland") or "Sonstige"
                     if bl not in self._ext_bl_groups:
                         try:
-                            self._ext_bl_groups[bl] = root.addGroup(f"Externe WFS – {bl}")
+                            self._ext_bl_groups[bl] = root.insertGroup(0, f"Externe WFS – {bl}")
                         except RuntimeError:
                             self._ext_bl_groups[bl] = None
                 self._ext_group = None
@@ -1168,7 +1168,7 @@ class UmweltDockWidget(QDockWidget):
                     host = raw_url[:40]
                 try:
                     root = QgsProject.instance().layerTreeRoot()
-                    self._ext_group = root.addGroup(f"Externer WFS – {host}")
+                    self._ext_group = root.insertGroup(0, f"Externer WFS – {host}")
                 except RuntimeError:
                     self._ext_group = None
 
@@ -1209,8 +1209,8 @@ class UmweltDockWidget(QDockWidget):
 
         try:
             root = QgsProject.instance().layerTreeRoot()
-            self._ext_int_group_inside  = root.addGroup("Externer WFS – innerhalb UR")
-            self._ext_int_group_outside = root.addGroup("Externer WFS – außerhalb UR")
+            self._ext_int_group_outside = root.insertGroup(0, "Externer WFS – außerhalb UR")
+            self._ext_int_group_inside  = root.insertGroup(0, "Externer WFS – innerhalb UR")
         except RuntimeError:
             self._ext_int_group_inside  = None
             self._ext_int_group_outside = None
