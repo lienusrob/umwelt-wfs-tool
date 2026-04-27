@@ -869,7 +869,16 @@ class UmweltDockWidget(QDockWidget):
         sel_row.addStretch()
         layout.addLayout(sel_row)
 
-        # ── Laden ────────────────────────────────────────────────────
+        # ── Suche ────────────────────────────────────────────────────
+        from qgis.PyQt.QtWidgets import QLineEdit
+        self._ext_search = QLineEdit()
+        self._ext_search.setPlaceholderText("Layer suchen …")
+        self._ext_search.setClearButtonEnabled(True)
+        self._ext_search.textChanged.connect(self._filter_ext_layers)
+        layout.addWidget(self._ext_search)
+
+        # ── Laden / Abbrechen ────────────────────────────────────────
+        load_cancel_row = QHBoxLayout()
         self._ext_load_btn = QPushButton("Ausgewählte Layer hinzufügen")
         self._ext_load_btn.setEnabled(False)
         self._ext_load_btn.setMinimumHeight(36)
@@ -879,7 +888,19 @@ class UmweltDockWidget(QDockWidget):
             "QPushButton:hover{background:#388e3c}"
             "QPushButton:disabled{background:#bdbdbd;color:#fff}"
         )
-        layout.addWidget(self._ext_load_btn)
+        load_cancel_row.addWidget(self._ext_load_btn)
+
+        self._ext_cancel_btn = QPushButton("✕ Abbrechen")
+        self._ext_cancel_btn.setVisible(False)
+        self._ext_cancel_btn.setMinimumHeight(36)
+        self._ext_cancel_btn.setStyleSheet(
+            "QPushButton{background:#c62828;color:white;font-weight:bold;"
+            "font-size:13px;padding:6px 12px;border-radius:5px}"
+            "QPushButton:hover{background:#b71c1c}"
+        )
+        self._ext_cancel_btn.clicked.connect(self._cancel_ext_load)
+        load_cancel_row.addWidget(self._ext_cancel_btn)
+        layout.addLayout(load_cancel_row)
 
         self._ext_progress = QProgressBar()
         self._ext_progress.setVisible(False)
@@ -1137,6 +1158,7 @@ class UmweltDockWidget(QDockWidget):
             return
 
         self._ext_load_btn.setEnabled(False)
+        self._ext_cancel_btn.setVisible(True)
         self._ext_progress.setVisible(True)
         self._ext_progress.setRange(0, len(selected))
         self._ext_progress.setValue(0)
@@ -1268,6 +1290,7 @@ class UmweltDockWidget(QDockWidget):
 
     def _on_ext_all_done(self):
         self._ext_load_btn.setEnabled(True)
+        self._ext_cancel_btn.setVisible(False)
         self._ext_progress.setVisible(False)
         self._ext_status.setText("Fertig.")
         if self._canvas_frozen:
@@ -1283,6 +1306,28 @@ class UmweltDockWidget(QDockWidget):
             pass
         finally:
             self._ext_group = None
+
+    def _cancel_ext_load(self):
+        for task in list(self._tasks):
+            try:
+                task.cancel()
+            except Exception:
+                pass
+        self._tasks.clear()
+        self._ext_pending = 0
+        self._ext_cancel_btn.setVisible(False)
+        self._ext_load_btn.setEnabled(True)
+        self._ext_progress.setVisible(False)
+        self._ext_status.setText("Abgebrochen.")
+        if self._canvas_frozen:
+            self._canvas_frozen = False
+            self.iface.mapCanvas().freeze(False)
+            self.iface.mapCanvas().refresh()
+
+    def _filter_ext_layers(self, text: str):
+        text = text.strip().lower()
+        for key, cb in self._ext_layer_checks.items():
+            cb.setVisible(not text or text in cb.text().lower())
 
     def _on_ext_intersect_layer_done(self, inside_layer, outside_layer, title, layer_def):
         for lyr, grp, is_inside in (
